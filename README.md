@@ -55,6 +55,10 @@ pnpm install
 ### Build zeo Engine
 
 ```bash
+# Install Rust if needed
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
+
 # Build with QuickJS (default)
 cargo build --manifest-path src/zeo/Cargo.toml --release
 
@@ -69,6 +73,7 @@ cargo build --manifest-path src/zeo/Cargo.toml --release --features mobile
 
 ```bash
 cd src/liteclaw
+pnpm install
 pnpm build
 ```
 
