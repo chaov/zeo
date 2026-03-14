@@ -1,0 +1,35 @@
+[benchmark]
+name = "zeo-benchmark"
+version = "0.1.0"
+description = "Performance benchmark framework for Zeo runtime vs Bun"
+
+[benchmark.targets]
+zeo = { path = "./target/release/zeo", command = "zeo" }
+bun = { path = "bun", command = "bun" }
+
+[benchmark.metrics]
+startup_time = { enabled = true, unit = "ms", threshold = 50 }
+memory_usage = { enabled = true, unit = "MB", threshold = 100 }
+execution_speed = { enabled = true, unit = "ops/sec", threshold = 1.5 }
+cpu_usage = { enabled = true, unit = "%", threshold = 80 }
+battery_consumption = { enabled = true, unit = "mWh", threshold = 50 }
+
+[benchmark.scenarios]
+javascript_execution = { enabled = true, iterations = 1000, warmup = 10 }
+module_loading = { enabled = { true, iterations = 100, warmup = 5 }
+file_io = { enabled = true, iterations = 500, warmup = 10 }
+network_requests = { enabled = true, iterations = 100, warmup = 5 }
+ai_agent_execution = { enabled = true, iterations = 50, warmup = 3 }
+
+[benchmark.reporting]
+output_dir = "./reports"
+format = ["json", "markdown", "html"]
+include_charts = true
+comparison_target = "bun"
+performance_goal = 1.5
+
+[benchmark.mobile]
+enabled = true
+platforms = ["ios", "android"]
+test_duration = 300
+battery_monitoring = true

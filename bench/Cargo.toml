@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Zeo Benchmark Runner Script
+# This script runs the benchmark suite comparing Zeo vs Bun
+
+set -e
+
+echo "╔════════════════════════════════════════════════════════════╗"
+echo "║          Zeo Performance Benchmark Runner                    ║"
+echo "╚════════════════════════════════════════════════════════════╝"
+echo ""
+
+# Check if Zeo is built
+if [ ! -f "../target/release/zeo" ]; then
+    echo "Building Zeo in release mode..."
+    cd ..
+    cargo build --release
+    cd benchmarks
+fi
+
+# Check if Bun is installed
+if ! command -v bun &> /dev/null; then
+    echo "Warning: Bun is not installed. Install it from https://bun.sh"
+    echo "Benchmark will run with partial functionality."
+fi
+
+# Create test server for network benchmarks
+echo "Starting test HTTP server..."
+node tests/network/test_server.js &
+SERVER_PID=$!
+
+# Wait for server to start
+sleep 2
+
+# Run benchmarks
+echo "Running benchmark suite..."
+cargo run --release
+
+# Cleanup
+echo "Cleaning up..."
+kill $SERVER_PID 2>/dev/null || true
+
+echo ""
+echo "Benchmark completed! Check the reports directory for results."
